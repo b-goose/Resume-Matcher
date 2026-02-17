@@ -19,9 +19,12 @@ export interface PersonalInfo {
   email?: string;
   phone?: string;
   location?: string;
+  gender?: string;
+  age?: string;
   website?: string;
   linkedin?: string;
   github?: string;
+  avatar?: string;
 }
 
 export interface Experience {
@@ -113,6 +116,12 @@ export interface CustomSection {
   text?: string; // For text type
 }
 
+// Personal info labels for i18n
+export interface PersonalInfoLabels {
+  gender?: string;
+  age?: string;
+}
+
 export interface ResumeData {
   personalInfo?: PersonalInfo;
   summary?: string;
@@ -132,6 +141,7 @@ interface ResumeProps {
   additionalSectionLabels?: Partial<AdditionalSectionLabels>;
   sectionHeadings?: Partial<ResumeSectionHeadings>;
   fallbackLabels?: Partial<ResumeFallbackLabels>;
+  personalInfoLabels?: Partial<PersonalInfoLabels>;
 }
 
 /**
@@ -153,6 +163,7 @@ const Resume: React.FC<ResumeProps> = ({
   additionalSectionLabels,
   sectionHeadings,
   fallbackLabels,
+  personalInfoLabels,
 }) => {
   // Merge provided settings with defaults
   const mergedSettings: TemplateSettings = {
@@ -181,6 +192,7 @@ const Resume: React.FC<ResumeProps> = ({
           data={resumeData}
           showContactIcons={mergedSettings.showContactIcons}
           additionalSectionLabels={additionalSectionLabels}
+          personalInfoLabels={personalInfoLabels}
         />
       )}
       {mergedSettings.template === 'swiss-two-column' && (
@@ -188,6 +200,7 @@ const Resume: React.FC<ResumeProps> = ({
           data={resumeData}
           showContactIcons={mergedSettings.showContactIcons}
           sectionHeadings={sectionHeadings}
+          personalInfoLabels={personalInfoLabels}
         />
       )}
       {mergedSettings.template === 'modern' && (
@@ -195,6 +208,7 @@ const Resume: React.FC<ResumeProps> = ({
           data={resumeData}
           showContactIcons={mergedSettings.showContactIcons}
           additionalSectionLabels={additionalSectionLabels}
+          personalInfoLabels={personalInfoLabels}
         />
       )}
       {mergedSettings.template === 'modern-two-column' && (
@@ -203,6 +217,7 @@ const Resume: React.FC<ResumeProps> = ({
           showContactIcons={mergedSettings.showContactIcons}
           sectionHeadings={sectionHeadings}
           fallbackLabels={fallbackLabels}
+          personalInfoLabels={personalInfoLabels}
         />
       )}
     </div>

@@ -126,9 +126,12 @@ class PersonalInfo(BaseModel):
     email: str = ""
     phone: str = ""
     location: str = ""
+    gender: str | None = None
+    age: str | None = None
     website: str | None = None
     linkedin: str | None = None
     github: str | None = None
+    avatar: str | None = None
 
 
 class Experience(BaseModel):

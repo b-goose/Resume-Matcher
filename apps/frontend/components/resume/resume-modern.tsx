@@ -4,6 +4,7 @@ import type {
   ResumeData,
   SectionMeta,
   AdditionalSectionLabels,
+  PersonalInfoLabels,
 } from '@/components/dashboard/resume-component';
 import { getSortedSections } from '@/lib/utils/section-helpers';
 import { formatDateRange } from '@/lib/utils';
@@ -15,6 +16,7 @@ interface ResumeModernProps {
   data: ResumeData;
   showContactIcons?: boolean;
   additionalSectionLabels?: Partial<AdditionalSectionLabels>;
+  personalInfoLabels?: Partial<PersonalInfoLabels>;
 }
 
 /**
@@ -30,6 +32,7 @@ export const ResumeModern: React.FC<ResumeModernProps> = ({
   data,
   showContactIcons = false,
   additionalSectionLabels,
+  personalInfoLabels,
 }) => {
   const { personalInfo, summary, workExperience, education, personalProjects, additional } = data;
 
@@ -288,64 +291,88 @@ export const ResumeModern: React.FC<ResumeModernProps> = ({
 
   return (
     <div className={styles.container}>
-      {/* Header Section - Centered Layout (always first) */}
+      {/* Header Section - Left-Right Layout (always first) */}
       {personalInfo && (
-        <header className={`text-center ${baseStyles['resume-header']}`}>
-          {/* Name - Centered */}
-          {personalInfo.name && (
-            <h1 className={`${baseStyles['resume-name']} tracking-tight uppercase mb-1`}>
-              {personalInfo.name}
-            </h1>
-          )}
+        <header className={`flex items-start gap-6 ${baseStyles['resume-header']}`}>
+          {/* Left Side - Name, Title, Contact */}
+          <div className="flex-1">
+            {/* Name */}
+            {personalInfo.name && (
+              <h1 className={`${baseStyles['resume-name']} tracking-tight uppercase mb-1`}>
+                {personalInfo.name}
+              </h1>
+            )}
 
-          {/* Decorative accent underline under name */}
-          <div className={styles['name-underline']} aria-hidden="true" />
+            {/* Decorative accent underline under name */}
+            <div className={styles['name-underline']} aria-hidden="true" />
 
-          {/* Title - Centered, below name */}
-          {personalInfo.title && (
-            <h2
-              className={`${baseStyles['resume-title']} ${baseStyles['resume-meta']} tracking-wide uppercase mt-3 mb-3`}
-            >
-              {personalInfo.title}
-            </h2>
-          )}
+            {/* Title */}
+            {personalInfo.title && (
+              <h2
+                className={`${baseStyles['resume-title']} ${baseStyles['resume-meta']} tracking-wide uppercase mt-3 mb-3`}
+              >
+                {personalInfo.title}
+              </h2>
+            )}
 
-          {/* Contact - Own line, centered */}
-          <div
-            className={`flex flex-wrap justify-center gap-x-1 gap-y-1 ${baseStyles['resume-meta']}`}
-          >
-            {renderContactDetail('Email', personalInfo.email, 'mailto:')}
-            {personalInfo.phone && (
-              <>
-                <span className={baseStyles['text-muted']}>,</span>
-                {renderContactDetail('Phone', personalInfo.phone, 'tel:')}
-              </>
-            )}
-            {personalInfo.location && (
-              <>
-                <span className={baseStyles['text-muted']}>,</span>
-                {renderContactDetail('Location', personalInfo.location)}
-              </>
-            )}
-            {personalInfo.website && (
-              <>
-                <span className={baseStyles['text-muted']}>,</span>
-                {renderContactDetail('Website', personalInfo.website)}
-              </>
-            )}
-            {personalInfo.linkedin && (
-              <>
-                <span className={baseStyles['text-muted']}>,</span>
-                {renderContactDetail('LinkedIn', personalInfo.linkedin)}
-              </>
-            )}
-            {personalInfo.github && (
-              <>
-                <span className={baseStyles['text-muted']}>,</span>
-                {renderContactDetail('GitHub', personalInfo.github)}
-              </>
-            )}
+            {/* Contact - Own line */}
+            <div className={`flex flex-wrap gap-x-1 gap-y-1 ${baseStyles['resume-meta']}`}>
+              {renderContactDetail('Email', personalInfo.email, 'mailto:')}
+              {personalInfo.phone && (
+                <>
+                  <span className={baseStyles['text-muted']}>,</span>
+                  {renderContactDetail('Phone', personalInfo.phone, 'tel:')}
+                </>
+              )}
+              {personalInfo.location && (
+                <>
+                  <span className={baseStyles['text-muted']}>,</span>
+                  {renderContactDetail('Location', personalInfo.location)}
+                </>
+              )}
+              {personalInfo.gender && (
+                <>
+                  <span className={baseStyles['text-muted']}>,</span>
+                  <span>{personalInfo.gender}</span>
+                </>
+              )}
+              {personalInfo.age && (
+                <>
+                  <span className={baseStyles['text-muted']}>,</span>
+                  <span>{personalInfo.age}</span>
+                </>
+              )}
+              {personalInfo.website && (
+                <>
+                  <span className={baseStyles['text-muted']}>,</span>
+                  {renderContactDetail('Website', personalInfo.website)}
+                </>
+              )}
+              {personalInfo.linkedin && (
+                <>
+                  <span className={baseStyles['text-muted']}>,</span>
+                  {renderContactDetail('LinkedIn', personalInfo.linkedin)}
+                </>
+              )}
+              {personalInfo.github && (
+                <>
+                  <span className={baseStyles['text-muted']}>,</span>
+                  {renderContactDetail('GitHub', personalInfo.github)}
+                </>
+              )}
+            </div>
           </div>
+
+          {/* Right Side - Avatar */}
+          {personalInfo.avatar && (
+            <div className="flex-shrink-0">
+              <img
+                src={personalInfo.avatar}
+                alt="Avatar"
+                className="w-24 h-32 object-cover border-2 border-gray-300"
+              />
+            </div>
+          )}
         </header>
       )}
 
@@ -514,7 +541,16 @@ function renderDynamicContent(
 
     case 'stringList':
       if (!customSection.strings?.length) return null;
-      return <div className={baseStyles['resume-text-sm']}>{customSection.strings.join(', ')}</div>;
+      return (
+        <ul className={`ml-4 ${baseStyles['resume-list']} ${baseStyles['resume-text-sm']}`}>
+          {customSection.strings.map((str, index) => (
+            <li key={index} className="flex">
+              <span className="mr-1.5 flex-shrink-0">•&nbsp;</span>
+              <span>{str}</span>
+            </li>
+          ))}
+        </ul>
+      );
 
     default:
       return null;

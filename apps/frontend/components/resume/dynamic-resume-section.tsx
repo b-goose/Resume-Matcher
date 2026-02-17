@@ -133,7 +133,16 @@ const ItemListSectionContent: React.FC<{ items: CustomSectionItem[] }> = ({ item
 const StringListSectionContent: React.FC<{ strings: string[] }> = ({ strings }) => {
   if (strings.length === 0) return null;
 
-  return <div className={baseStyles['resume-text-sm']}>{strings.join(', ')}</div>;
+  return (
+    <ul className={`ml-4 ${baseStyles['resume-list']} ${baseStyles['resume-text-sm']}`}>
+      {strings.map((str, index) => (
+        <li key={index} className="flex">
+          <span className="mr-1.5 flex-shrink-0">•&nbsp;</span>
+          <span>{str}</span>
+        </li>
+      ))}
+    </ul>
+  );
 };
 
 export default DynamicResumeSection;

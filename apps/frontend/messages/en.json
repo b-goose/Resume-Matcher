@@ -416,12 +416,15 @@
       "resetDefaults": "Reset to Defaults"
     },
     "personalInfoForm": {
+      "avatarHint": "Upload profile picture (optional)",
       "placeholders": {
         "name": "John Doe",
         "title": "Software Engineer",
         "email": "john@example.com",
         "phone": "+1 (555) 000-0000",
         "location": "City, Country",
+        "gender": "Male/Female/Other",
+        "age": "E.g., 25",
         "website": "portfolio.com",
         "linkedin": "linkedin.com/in/john",
         "github": "github.com/john"
@@ -735,6 +738,9 @@
       "email": "Email",
       "phone": "Phone",
       "location": "Location",
+      "gender": "Gender",
+      "age": "Age",
+      "avatar": "Avatar",
       "website": "Website",
       "linkedin": "LinkedIn",
       "github": "GitHub"

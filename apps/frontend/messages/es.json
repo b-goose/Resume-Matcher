@@ -416,12 +416,15 @@
       "resetDefaults": "Restablecer valores"
     },
     "personalInfoForm": {
+      "avatarHint": "Subir foto de perfil (opcional)",
       "placeholders": {
         "name": "Juan Pérez",
         "title": "Ingeniero de software",
         "email": "juan@example.com",
         "phone": "+34 600 000 000",
         "location": "Ciudad, País",
+        "gender": "Masculino/Femenino/Otro",
+        "age": "Ej., 25",
         "website": "portfolio.com",
         "linkedin": "linkedin.com/in/juan",
         "github": "github.com/juan"
@@ -735,6 +738,9 @@
       "email": "Correo Electrónico",
       "phone": "Teléfono",
       "location": "Ubicación",
+      "gender": "Género",
+      "age": "Edad",
+      "avatar": "Avatar",
       "website": "Sitio Web",
       "linkedin": "LinkedIn",
       "github": "GitHub"

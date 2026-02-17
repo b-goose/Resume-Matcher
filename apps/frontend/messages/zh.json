@@ -416,12 +416,15 @@
       "resetDefaults": "恢复默认设置"
     },
     "personalInfoForm": {
+      "avatarHint": "上传个人头像图片（可选）",
       "placeholders": {
         "name": "张三",
         "title": "软件工程师",
         "email": "zhangsan@example.com",
         "phone": "+86 138 0000 0000",
         "location": "城市，国家",
+        "gender": "男/女/其他",
+        "age": "例如：25",
         "website": "portfolio.com",
         "linkedin": "linkedin.com/in/zhangsan",
         "github": "github.com/zhangsan"
@@ -735,6 +738,9 @@
       "email": "电子邮箱",
       "phone": "电话",
       "location": "所在地",
+      "gender": "性别",
+      "age": "年龄",
+      "avatar": "头像",
       "website": "个人网站",
       "linkedin": "领英",
       "github": "GitHub"

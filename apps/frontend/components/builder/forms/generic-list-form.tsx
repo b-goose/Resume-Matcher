@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useTranslations } from '@/lib/i18n';
@@ -28,22 +28,11 @@ export const GenericListForm: React.FC<GenericListFormProps> = ({
   const finalLabel = label ?? t('builder.customSections.itemsLabel');
   const finalPlaceholder = placeholder ?? t('builder.customSections.itemsPlaceholder');
 
-  const handleChange = (value: string) => {
-    // Split by newlines, filter empty lines
-    const newItems = value.split('\n').filter((item) => item.trim() !== '');
-    onChange(newItems);
-  };
+  const handleChange = useCallback((value: string) => {
+    onChange(value.split('\n'));
+  }, [onChange]);
 
-  const formatItems = (arr?: string[]) => {
-    return arr?.join('\n') || '';
-  };
-
-  // Explicitly allow Enter key to create newlines
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === 'Enter') {
-      e.stopPropagation();
-    }
-  };
+  const textValue = items?.join('\n') || '';
 
   return (
     <div className="space-y-2">
@@ -54,9 +43,8 @@ export const GenericListForm: React.FC<GenericListFormProps> = ({
         {t('builder.additionalForm.instructions')}
       </p>
       <Textarea
-        value={formatItems(items)}
+        value={textValue}
         onChange={(e) => handleChange(e.target.value)}
-        onKeyDown={handleKeyDown}
         placeholder={finalPlaceholder}
         className="min-h-[150px] text-black rounded-none border-black bg-white focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-blue-700"
       />

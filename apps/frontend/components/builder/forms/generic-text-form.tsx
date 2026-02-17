@@ -28,13 +28,6 @@ export const GenericTextForm: React.FC<GenericTextFormProps> = ({
   const finalLabel = label ?? t('builder.customSections.contentLabel');
   const finalPlaceholder = placeholder ?? t('builder.customSections.defaultTextPlaceholder');
 
-  // Explicitly allow Enter key to create newlines
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === 'Enter') {
-      e.stopPropagation();
-    }
-  };
-
   return (
     <div className="space-y-2">
       <Label className="font-mono text-xs uppercase tracking-wider text-gray-500">
@@ -43,7 +36,6 @@ export const GenericTextForm: React.FC<GenericTextFormProps> = ({
       <Textarea
         value={value || ''}
         onChange={(e) => onChange(e.target.value)}
-        onKeyDown={handleKeyDown}
         placeholder={finalPlaceholder}
         className="min-h-[150px] text-black rounded-none border-black focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-blue-700 bg-white"
       />

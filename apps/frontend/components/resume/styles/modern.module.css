@@ -15,12 +15,12 @@
   width: 100%;
 }
 
-/* Name underline decoration - placed after the name */
+/* Name underline decoration - placed after name */
 .name-underline {
   height: 3px;
   width: 60px;
   background-color: var(--resume-accent-primary);
-  margin: 0.5rem auto 0;
+  margin: 0.5rem 0 0;
 }
 
 /* Section title with accent color and underline */

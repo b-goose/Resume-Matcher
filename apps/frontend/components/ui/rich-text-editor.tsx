@@ -53,7 +53,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
         blockquote: false,
         codeBlock: false,
         horizontalRule: false,
-        hardBreak: false,
+        // hardBreak: false,
       }),
       Underline,
       Link.configure({
@@ -68,8 +68,8 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
     onUpdate: ({ editor }) => {
       isInternalUpdateRef.current = true;
       const html = editor.getHTML();
-      // Convert <p> tags to plain content since we're in bullet mode
-      const cleanHtml = html.replace(/<p>/g, '').replace(/<\/p>/g, '').trim();
+      // Convert <p> tags to <br> for better line break support
+      let cleanHtml = html.replace(/<\/p>\s*<p>/g, '<br>').replace(/<p>/g, '').replace(/<\/p>/g, '');
       onChange(cleanHtml);
       // Reset flag after a tick to ensure it stays true through the render cycle
       setTimeout(() => {
@@ -83,13 +83,6 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
           'prose-strong:font-bold prose-em:italic prose-a:text-blue-700 prose-a:underline'
         ),
         style: `min-height: calc(${minHeight} - 24px)`,
-      },
-      handleKeyDown: (view, event) => {
-        // Allow Enter key to work (stopPropagation per coding standards)
-        if (event.key === 'Enter') {
-          event.stopPropagation();
-        }
-        return false;
       },
     },
     // Immediately render without waiting for idle

@@ -1,6 +1,10 @@
 import React from 'react';
 import { Mail, Phone, MapPin, Globe, Linkedin, Github, ExternalLink } from 'lucide-react';
-import type { ResumeData, ResumeSectionHeadings } from '@/components/dashboard/resume-component';
+import type {
+  ResumeData,
+  ResumeSectionHeadings,
+  PersonalInfoLabels,
+} from '@/components/dashboard/resume-component';
 import { getSortedSections, getSectionMeta } from '@/lib/utils/section-helpers';
 import { formatDateRange } from '@/lib/utils';
 import { DynamicResumeSection } from './dynamic-resume-section';
@@ -12,6 +16,7 @@ interface ResumeTwoColumnProps {
   data: ResumeData;
   showContactIcons?: boolean;
   sectionHeadings?: Partial<ResumeSectionHeadings>;
+  personalInfoLabels?: Partial<PersonalInfoLabels>;
 }
 
 /**
@@ -29,6 +34,7 @@ export const ResumeTwoColumn: React.FC<ResumeTwoColumnProps> = ({
   data,
   showContactIcons = false,
   sectionHeadings,
+  personalInfoLabels,
 }) => {
   const { personalInfo, summary, workExperience, education, personalProjects, additional } = data;
 
@@ -120,64 +126,88 @@ export const ResumeTwoColumn: React.FC<ResumeTwoColumnProps> = ({
 
   return (
     <>
-      {/* Header Section - Centered Layout */}
+      {/* Header Section - Left-Right Layout */}
       {personalInfo && (
         <header
-          className={`text-center ${baseStyles['resume-header']} border-b`}
+          className={`flex items-start gap-6 ${baseStyles['resume-header']} border-b`}
           style={{ borderColor: 'var(--resume-border-primary)' }}
         >
-          {/* Name - Centered */}
-          {personalInfo.name && (
-            <h1 className={`${baseStyles['resume-name']} tracking-tight uppercase mb-1`}>
-              {personalInfo.name}
-            </h1>
-          )}
+          {/* Left Side - Name, Title, Contact */}
+          <div className="flex-1">
+            {/* Name */}
+            {personalInfo.name && (
+              <h1 className={`${baseStyles['resume-name']} tracking-tight uppercase mb-1`}>
+                {personalInfo.name}
+              </h1>
+            )}
 
-          {/* Title - Centered, below name */}
-          {personalInfo.title && (
-            <h2
-              className={`${baseStyles['resume-title']} ${baseStyles['resume-meta']} tracking-wide uppercase mb-3`}
-            >
-              {personalInfo.title}
-            </h2>
-          )}
+            {/* Title */}
+            {personalInfo.title && (
+              <h2
+                className={`${baseStyles['resume-title']} ${baseStyles['resume-meta']} tracking-wide uppercase mb-3`}
+              >
+                {personalInfo.title}
+              </h2>
+            )}
 
-          {/* Contact - Own line, centered */}
-          <div
-            className={`flex flex-wrap justify-center gap-x-1 gap-y-1 ${baseStyles['resume-meta']}`}
-          >
-            {personalInfo.email && renderContactDetail('Email', personalInfo.email, 'mailto:')}
-            {personalInfo.phone && (
-              <>
-                <span className={baseStyles['text-muted']}>,</span>
-                {renderContactDetail('Phone', personalInfo.phone, 'tel:')}
-              </>
-            )}
-            {personalInfo.location && (
-              <>
-                <span className={baseStyles['text-muted']}>,</span>
-                {renderContactDetail('Location', personalInfo.location)}
-              </>
-            )}
-            {personalInfo.website && (
-              <>
-                <span className={baseStyles['text-muted']}>,</span>
-                {renderContactDetail('Website', personalInfo.website)}
-              </>
-            )}
-            {personalInfo.linkedin && (
-              <>
-                <span className={baseStyles['text-muted']}>,</span>
-                {renderContactDetail('LinkedIn', personalInfo.linkedin)}
-              </>
-            )}
-            {personalInfo.github && (
-              <>
-                <span className={baseStyles['text-muted']}>,</span>
-                {renderContactDetail('GitHub', personalInfo.github)}
-              </>
-            )}
+            {/* Contact - Own line */}
+            <div className={`flex flex-wrap gap-x-1 gap-y-1 ${baseStyles['resume-meta']}`}>
+              {personalInfo.email && renderContactDetail('Email', personalInfo.email, 'mailto:')}
+              {personalInfo.phone && (
+                <>
+                  <span className={baseStyles['text-muted']}>,</span>
+                  {renderContactDetail('Phone', personalInfo.phone, 'tel:')}
+                </>
+              )}
+              {personalInfo.location && (
+                <>
+                  <span className={baseStyles['text-muted']}>,</span>
+                  {renderContactDetail('Location', personalInfo.location)}
+                </>
+              )}
+              {personalInfo.gender && (
+                <>
+                  <span className={baseStyles['text-muted']}>,</span>
+                  <span>{personalInfo.gender}</span>
+                </>
+              )}
+              {personalInfo.age && (
+                <>
+                  <span className={baseStyles['text-muted']}>,</span>
+                  <span>{personalInfo.age}</span>
+                </>
+              )}
+              {personalInfo.website && (
+                <>
+                  <span className={baseStyles['text-muted']}>,</span>
+                  {renderContactDetail('Website', personalInfo.website)}
+                </>
+              )}
+              {personalInfo.linkedin && (
+                <>
+                  <span className={baseStyles['text-muted']}>,</span>
+                  {renderContactDetail('LinkedIn', personalInfo.linkedin)}
+                </>
+              )}
+              {personalInfo.github && (
+                <>
+                  <span className={baseStyles['text-muted']}>,</span>
+                  {renderContactDetail('GitHub', personalInfo.github)}
+                </>
+              )}
+            </div>
           </div>
+
+          {/* Right Side - Avatar */}
+          {personalInfo.avatar && (
+            <div className="flex-shrink-0">
+              <img
+                src={personalInfo.avatar}
+                alt="Avatar"
+                className="w-24 h-32 object-cover border-2 border-gray-300"
+              />
+            </div>
+          )}
         </header>
       )}
 

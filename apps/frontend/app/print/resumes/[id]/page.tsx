@@ -165,6 +165,10 @@ export default async function PrintResumePage({ params, searchParams }: PageProp
     certifications: t('resume.additionalLabels.certifications'),
     awards: t('resume.additionalLabels.awards'),
   };
+  const personalInfoLabels = {
+    gender: t('resume.personalInfo.gender'),
+    age: t('resume.personalInfo.age'),
+  };
   const sectionHeadings = {
     summary: t('resume.sections.summary'),
     experience: t('resume.sections.experience'),

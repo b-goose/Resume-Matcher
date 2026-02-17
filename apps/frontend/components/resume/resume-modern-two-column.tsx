@@ -4,6 +4,7 @@ import type {
   ResumeData,
   ResumeSectionHeadings,
   ResumeFallbackLabels,
+  PersonalInfoLabels,
 } from '@/components/dashboard/resume-component';
 import { getSortedSections, getSectionMeta } from '@/lib/utils/section-helpers';
 import { formatDateRange } from '@/lib/utils';
@@ -17,6 +18,7 @@ interface ResumeModernTwoColumnProps {
   showContactIcons?: boolean;
   sectionHeadings?: Partial<ResumeSectionHeadings>;
   fallbackLabels?: Partial<ResumeFallbackLabels>;
+  personalInfoLabels?: Partial<PersonalInfoLabels>;
 }
 
 /**
@@ -35,6 +37,7 @@ export const ResumeModernTwoColumn: React.FC<ResumeModernTwoColumnProps> = ({
   showContactIcons = false,
   sectionHeadings,
   fallbackLabels,
+  personalInfoLabels,
 }) => {
   const { personalInfo, summary, workExperience, education, personalProjects, additional } = data;
 
@@ -130,22 +133,36 @@ export const ResumeModernTwoColumn: React.FC<ResumeModernTwoColumnProps> = ({
     <>
       {/* Header */}
       <div className={baseStyles['resume-header']}>
-        <h1 className={`${baseStyles['resume-name']} ${styles.nameAccent}`}>
-          {personalInfo?.name || nameFallback}
-        </h1>
-        {personalInfo?.title && (
-          <div className={`${baseStyles['resume-title']} mt-1`}>{personalInfo.title}</div>
-        )}
-        {personalInfo && (
-          <div className={`${baseStyles['resume-meta']} flex flex-wrap gap-x-3 gap-y-1 mt-2`}>
-            {renderContactDetail('Email', personalInfo.email, 'mailto:')}
-            {renderContactDetail('Phone', personalInfo.phone, 'tel:')}
-            {renderContactDetail('Location', personalInfo.location)}
-            {renderContactDetail('Website', personalInfo.website)}
-            {renderContactDetail('LinkedIn', personalInfo.linkedin)}
-            {renderContactDetail('GitHub', personalInfo.github)}
+        <div className="flex items-start gap-4">
+          <div className="flex-1">
+            <h1 className={`${baseStyles['resume-name']} ${styles.nameAccent}`}>
+              {personalInfo?.name || nameFallback}
+            </h1>
+            {personalInfo?.title && (
+              <div className={`${baseStyles['resume-title']} mt-1`}>{personalInfo.title}</div>
+            )}
+            {personalInfo && (
+              <div className={`${baseStyles['resume-meta']} flex flex-wrap gap-x-3 gap-y-1 mt-2`}>
+                {renderContactDetail('Email', personalInfo.email, 'mailto:')}
+                {renderContactDetail('Phone', personalInfo.phone, 'tel:')}
+                {renderContactDetail('Location', personalInfo.location)}
+                {personalInfo.gender && <span>{personalInfo.gender}</span>}
+                {personalInfo.age && <span>{personalInfo.age}</span>}
+                {renderContactDetail('Website', personalInfo.website)}
+                {renderContactDetail('LinkedIn', personalInfo.linkedin)}
+                {renderContactDetail('GitHub', personalInfo.github)}
+              </div>
+            )}
           </div>
-        )}
+          {/* Avatar */}
+          {personalInfo?.avatar && (
+            <img
+              src={personalInfo.avatar}
+              alt="Avatar"
+              className="w-24 h-32 object-cover border-2 border-gray-300 flex-shrink-0"
+            />
+          )}
+        </div>
       </div>
 
       {/* Two-Column Grid */}

@@ -416,12 +416,15 @@
       "resetDefaults": "デフォルトに戻す"
     },
     "personalInfoForm": {
+      "avatarHint": "プロフィール写真をアップロード（オプション）",
       "placeholders": {
         "name": "山田 太郎",
         "title": "ソフトウェアエンジニア",
         "email": "taro@example.com",
         "phone": "+81 90-0000-0000",
         "location": "都市、国",
+        "gender": "男性/女性/その他",
+        "age": "例：25",
         "website": "portfolio.com",
         "linkedin": "linkedin.com/in/taro",
         "github": "github.com/taro"
@@ -735,6 +738,9 @@
       "email": "メールアドレス",
       "phone": "電話番号",
       "location": "所在地",
+      "gender": "性別",
+      "age": "年齢",
+      "avatar": "アバター",
       "website": "ウェブサイト",
       "linkedin": "LinkedIn",
       "github": "GitHub"

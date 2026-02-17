@@ -416,12 +416,15 @@
       "resetDefaults": "Restaurar Padrões"
     },
     "personalInfoForm": {
+      "avatarHint": "Carregar foto de perfil (opcional)",
       "placeholders": {
         "name": "João Silva",
         "title": "Engenheiro de Software",
         "email": "joao@exemplo.com",
         "phone": "+55 (11) 99999-0000",
         "location": "São Paulo, Brasil",
+        "gender": "Masculino/Feminino/Outro",
+        "age": "Ex., 25",
         "website": "portfolio.com",
         "linkedin": "linkedin.com/in/joao",
         "github": "github.com/joao"
@@ -735,6 +738,9 @@
       "email": "Email",
       "phone": "Telefone",
       "location": "Localização",
+      "gender": "Gênero",
+      "age": "Idade",
+      "avatar": "Avatar",
       "website": "Website",
       "linkedin": "LinkedIn",
       "github": "GitHub"
