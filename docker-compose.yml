@@ -8,21 +8,22 @@ services:
       # If you change BACKEND_PORT, you must rebuild with matching NEXT_PUBLIC_API_URL:
       #   BACKEND_PORT=9000 docker-compose build --build-arg NEXT_PUBLIC_API_URL=http://localhost:9000
       args:
-        - NEXT_PUBLIC_API_URL=http://localhost:${BACKEND_PORT:-8000}
+        - NEXT_PUBLIC_API_URL=http://localhost:${BACKEND_PORT:-9000}
     image: resume-matcher
     container_name: resume-matcher
     # Port mapping: HOST_PORT:CONTAINER_PORT
     # Customize host ports via environment variables (container ports are fixed)
     ports:
-      - "${FRONTEND_PORT:-3000}:3000"   # Frontend (Next.js)
-      - "${BACKEND_PORT:-8000}:8000"    # Backend API (FastAPI)
+      - "${FRONTEND_PORT:-4000}:4000" # Frontend (Next.js)
+      - "${BACKEND_PORT:-9000}:9000" # Backend API (FastAPI)
     volumes:
       - resume-data:/app/backend/data
     environment:
       - NODE_ENV=production
       # Pass port configuration to container for internal use
-      - FRONTEND_PORT=${FRONTEND_PORT:-3000}
-      - BACKEND_PORT=${BACKEND_PORT:-8000}
+      - FRONTEND_PORT=${FRONTEND_PORT:-4000}
+      - BACKEND_PORT=${BACKEND_PORT:-9000}
+      # - FRONTEND_BASE_URL=http://0.0.0.0:${FRONTEND_PORT:-4000}
       # LLM Configuration - configure via Settings UI or set env vars for explicit overrides
       # Supported providers: openai, anthropic, openrouter, gemini, deepseek, ollama
       # Defaults are defined in apps/backend/app/config.py
@@ -34,8 +35,8 @@ services:
       - LLM_API_BASE=${LLM_API_BASE:-}
     restart: unless-stopped
     healthcheck:
-      # Health check uses internal container port (always 8000)
-      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/health"]
+      # Health check uses internal container port (always 9000)
+      test: ["CMD", "curl", "-f", "http://localhost:9000/api/v1/health"]
       interval: 30s
       timeout: 10s
       retries: 3

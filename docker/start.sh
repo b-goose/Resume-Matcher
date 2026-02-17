@@ -11,8 +11,8 @@ NC='\033[0m' # No Color
 BOLD='\033[1m'
 
 # Port configuration (can be overridden via environment variables)
-FRONTEND_PORT="${FRONTEND_PORT:-3000}"
-BACKEND_PORT="${BACKEND_PORT:-8000}"
+FRONTEND_PORT="${FRONTEND_PORT:-4000}"
+BACKEND_PORT="${BACKEND_PORT:-9000}"
 
 # Print banner
 print_banner() {

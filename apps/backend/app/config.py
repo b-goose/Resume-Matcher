@@ -137,13 +137,12 @@ class Settings(BaseSettings):
 
     # Server Configuration
     host: str = "0.0.0.0"
-    port: int = 8000
-    frontend_base_url: str = "http://localhost:3000"
+    port: int = 9000
+    frontend_base_url: str = "http://172.23.0.2:4000"
 
     # CORS Configuration
     cors_origins: list[str] = [
-        "http://localhost:3000",
-        "http://127.0.0.1:3000",
+        "http://localhost:4000",
     ]
 
     # Paths

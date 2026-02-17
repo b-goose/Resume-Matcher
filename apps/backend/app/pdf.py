@@ -113,7 +113,14 @@ def _find_chromium_executable() -> Optional[str]:
 
 async def _launch_browser(playwright: Playwright) -> Browser:
     try:
-        return await playwright.chromium.launch()
+        return await playwright.chromium.launch(
+            args=[
+                "--no-sandbox",
+                "--disable-setuid-sandbox",
+                "--disable-dev-shm-usage",
+                "--disable-gpu",
+            ]
+        )
     except PlaywrightError as e:
         if "Executable doesn't exist" not in str(e):
             raise
@@ -123,7 +130,15 @@ async def _launch_browser(playwright: Playwright) -> Browser:
                 "Playwright browser executable is missing, and no system Chrome/Edge "
                 "installation was found. Install Playwright browsers or install Chrome/Edge."
             ) from e
-        return await playwright.chromium.launch(executable_path=fallback_executable)
+        return await playwright.chromium.launch(
+            executable_path=fallback_executable,
+            args=[
+                "--no-sandbox",
+                "--disable-setuid-sandbox",
+                "--disable-dev-shm-usage",
+                "--disable-gpu",
+            ]
+        )
 
 
 async def _render_page_to_pdf(

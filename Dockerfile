@@ -8,7 +8,7 @@ FROM node:22 AS frontend-builder
 
 # Build argument for API URL (allows customization at build time)
 # Default matches the default BACKEND_PORT in docker-compose.yml
-ARG NEXT_PUBLIC_API_URL=http://localhost:8000
+ARG NEXT_PUBLIC_API_URL=http://localhost:9000
 ENV NEXT_TELEMETRY_DISABLED=1
 
 WORKDIR /app/frontend
@@ -65,9 +65,16 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libcairo2 \
     libatspi2.0-0 \
     libgtk-3-0 \
+    fontconfig \
+    # Chinese fonts for PDF rendering
+    fonts-noto-cjk \
+    fonts-noto-cjk-extra \
+    fonts-wqy-zenhei \
+    fonts-wqy-microhei \
     && curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
     && apt-get install -y --no-install-recommends nodejs \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && fc-cache -fv
 
 WORKDIR /app
 
@@ -114,7 +121,7 @@ USER appuser
 RUN python -m playwright install chromium
 
 # Expose ports
-EXPOSE 3000 8000
+EXPOSE 4000 9000
 
 # Volume for persistent data
 VOLUME ["/app/backend/data"]
@@ -124,7 +131,7 @@ WORKDIR /app
 
 # Health check (endpoint is at /api/v1/health per backend router configuration)
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
-    CMD curl -f http://localhost:8000/api/v1/health || exit 1
+    CMD curl -f http://localhost:9000/api/v1/health || exit 1
 
 # Start the application
 CMD ["/app/start.sh"]

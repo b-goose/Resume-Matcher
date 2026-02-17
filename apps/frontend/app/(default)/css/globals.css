@@ -51,8 +51,8 @@
   --shadow-sw-card: 6px 6px 0px 0px #000000;
 
   /* Fonts */
-  --font-sans: 'Geist Sans', sans-serif;
-  --font-mono: 'Space Grotesk', monospace;
+  --font-sans: 'Geist Sans', 'Noto Sans CJK SC', 'WenQuanYi Zen Hei', sans-serif;
+  --font-mono: 'Space Grotesk', 'Noto Sans Mono CJK SC', monospace;
 
   /* Animations */
   --animate-gradient: gradient 8s linear infinite;
@@ -65,8 +65,8 @@
 }
 
 :root {
-  --font-mono: 'Geist Mono', monospace;
-  --font-sans: 'Geist', sans-serif;
+  --font-mono: 'Geist Mono', 'Noto Sans Mono CJK SC', monospace;
+  --font-sans: 'Geist', 'Noto Sans CJK SC', 'WenQuanYi Zen Hei', 'WenQuanYi Micro Hei', sans-serif;
   --radius: 0.625rem;
 
   /* Swiss International Style Palette */
@@ -153,7 +153,8 @@
   html,
   body {
     background: #ffffff !important;
-    color: #000000 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
 
   body * {
@@ -169,6 +170,8 @@
   .cover-letter-print,
   .cover-letter-print * {
     visibility: visible !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
 
   .resume-print,
@@ -181,11 +184,15 @@
     border: none !important;
     box-shadow: none !important;
     background: #ffffff !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
 
   .resume-body {
     box-shadow: none !important;
     background: #ffffff !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
 
   .resume-scale {
@@ -194,8 +201,15 @@
   }
 
   a {
-    color: #000000 !important;
     text-decoration: none !important;
+  }
+
+  /* Ensure accent colors are preserved in PDF */
+  [style*="--resume-accent"],
+  [style*="--resume-accent-primary"],
+  [style*="--resume-accent-light"] {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
 }
 
