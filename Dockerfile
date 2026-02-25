@@ -43,11 +43,18 @@ ENV PYTHONUNBUFFERED=1 \
     NEXT_TELEMETRY_DISABLED=1
 
 # Install system dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    # Node.js installer dependencies
+RUN set -eux; \
+    # Switch Debian apt sources from http to https (supports both legacy and deb822 layouts)
+    if [ -f /etc/apt/sources.list ]; then \
+    sed -i 's|http://deb.debian.org/debian|https://deb.debian.org/debian|g; s|http://security.debian.org/debian-security|https://security.debian.org/debian-security|g' /etc/apt/sources.list; \
+    fi; \
+    if ls /etc/apt/sources.list.d/* >/dev/null 2>&1; then \
+    sed -i 's|http://deb.debian.org/debian|https://deb.debian.org/debian|g; s|http://security.debian.org/debian-security|https://security.debian.org/debian-security|g' /etc/apt/sources.list.d/* || true; \
+    fi; \
+    apt-get update -o Acquire::Retries=5; \
+    apt-get install -y --no-install-recommends -o Acquire::Retries=5 \
     ca-certificates \
     curl \
-    # Playwright dependencies
     libnss3 \
     libnspr4 \
     libatk1.0-0 \
@@ -66,15 +73,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libatspi2.0-0 \
     libgtk-3-0 \
     fontconfig \
-    # Chinese fonts for PDF rendering
     fonts-noto-cjk \
     fonts-noto-cjk-extra \
     fonts-wqy-zenhei \
-    fonts-wqy-microhei \
-    && curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
-    && apt-get install -y --no-install-recommends nodejs \
-    && rm -rf /var/lib/apt/lists/* \
-    && fc-cache -fv
+    fonts-wqy-microhei; \
+    curl -fsSL https://deb.nodesource.com/setup_22.x | bash -; \
+    apt-get install -y --no-install-recommends -o Acquire::Retries=5 nodejs; \
+    rm -rf /var/lib/apt/lists/*; \
+    fc-cache -fv
 
 WORKDIR /app
 

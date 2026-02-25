@@ -14,6 +14,16 @@ BOLD='\033[1m'
 FRONTEND_PORT="${FRONTEND_PORT:-4000}"
 BACKEND_PORT="${BACKEND_PORT:-9000}"
 
+# Resolve frontend base URL for backend PDF rendering.
+# Use container IP by default to avoid localhost routing issues in some Docker setups.
+CONTAINER_IP="$(hostname -i 2>/dev/null | awk '{print $1}')"
+if [ -z "$CONTAINER_IP" ]; then
+    CONTAINER_IP="127.0.0.1"
+fi
+if [ -z "${FRONTEND_BASE_URL:-}" ] || [[ "${FRONTEND_BASE_URL}" == *"localhost"* ]] || [[ "${FRONTEND_BASE_URL}" == *"127.0.0.1"* ]]; then
+    export FRONTEND_BASE_URL="http://${CONTAINER_IP}:${FRONTEND_PORT}"
+fi
+
 # Print banner
 print_banner() {
     echo -e "${CYAN}"
@@ -86,6 +96,7 @@ print_banner
 info "Port configuration:"
 echo -e "  Frontend port: ${BOLD}${FRONTEND_PORT}${NC}"
 echo -e "  Backend port:  ${BOLD}${BACKEND_PORT}${NC}"
+echo -e "  FRONTEND_BASE_URL: ${BOLD}${FRONTEND_BASE_URL}${NC}"
 echo ""
 
 # Check and create data directory

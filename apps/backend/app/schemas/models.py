@@ -323,6 +323,55 @@ def normalize_resume_data(data: dict[str, Any]) -> dict[str, Any]:
         data["sectionMeta"] = copy.deepcopy(DEFAULT_SECTION_META)
     if "customSections" not in data:
         data["customSections"] = {}
+
+    # Ensure every custom section has corresponding sectionMeta so UI can render it.
+    custom_sections = data.get("customSections", {})
+    if isinstance(custom_sections, dict):
+        section_meta = data.get("sectionMeta", [])
+        if isinstance(section_meta, list):
+            existing_keys = {
+                item.get("key")
+                for item in section_meta
+                if isinstance(item, dict) and isinstance(item.get("key"), str)
+            }
+            max_order = max(
+                (
+                    item.get("order", 0)
+                    for item in section_meta
+                    if isinstance(item, dict)
+                    and isinstance(item.get("order"), int)
+                ),
+                default=0,
+            )
+            for key, value in custom_sections.items():
+                if not isinstance(key, str) or key in existing_keys:
+                    continue
+                section_type = "text"
+                if isinstance(value, dict):
+                    raw_type = value.get("sectionType")
+                    if raw_type in {
+                        SectionType.TEXT,
+                        SectionType.ITEM_LIST,
+                        SectionType.STRING_LIST,
+                    }:
+                        section_type = str(raw_type)
+                    elif value.get("items") is not None:
+                        section_type = SectionType.ITEM_LIST.value
+                    elif value.get("strings") is not None:
+                        section_type = SectionType.STRING_LIST.value
+                max_order += 1
+                section_meta.append(
+                    {
+                        "id": key,
+                        "key": key,
+                        "displayName": key.replace("_", " ").title(),
+                        "sectionType": section_type,
+                        "isDefault": False,
+                        "isVisible": True,
+                        "order": max_order,
+                    }
+                )
+                existing_keys.add(key)
     return data
 
 

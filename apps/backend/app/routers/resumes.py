@@ -40,7 +40,13 @@ from app.schemas import (
     UpdateTitleRequest,
     normalize_resume_data,
 )
-from app.services.parser import parse_document, parse_resume_to_json
+from app.services.parser import (
+    embed_resume_metadata_in_pdf,
+    extract_embedded_resume_data,
+    parse_document,
+    parse_resume_to_json,
+    resume_data_to_markdown,
+)
 from app.services.improver import (
     extract_job_keywords,
     generate_improvements,
@@ -327,6 +333,24 @@ async def upload_resume(file: UploadFile = File(...)) -> ResumeUploadResponse:
 
     if len(content) == 0:
         raise HTTPException(status_code=400, detail="Empty file")
+
+    embedded_data = extract_embedded_resume_data(content, file.filename or "resume.pdf")
+    if embedded_data:
+        markdown_content = resume_data_to_markdown(embedded_data)
+        resume = await db.create_resume_atomic_master(
+            content=markdown_content,
+            content_type="md",
+            filename=file.filename,
+            processed_data=embedded_data,
+            processing_status="ready",
+        )
+        return ResumeUploadResponse(
+            message=f"File {file.filename} uploaded successfully",
+            request_id=str(uuid4()),
+            resume_id=resume["resume_id"],
+            processing_status="ready",
+            is_master=resume.get("is_master", False),
+        )
 
     # Convert to markdown
     try:
@@ -1096,6 +1120,12 @@ async def download_resume_pdf(
         pdf_bytes = await render_resume_pdf(url, pageSize, margins=pdf_margins)
     except PDFRenderError as e:
         raise HTTPException(status_code=503, detail=str(e))
+    processed_data = resume.get("processed_data")
+    if isinstance(processed_data, dict):
+        try:
+            pdf_bytes = embed_resume_metadata_in_pdf(pdf_bytes, processed_data, resume_id)
+        except Exception as e:
+            logger.warning("Failed to embed resume metadata into PDF for %s: %s", resume_id, e)
 
     headers = {"Content-Disposition": f'attachment; filename="resume_{resume_id}.pdf"'}
     return Response(content=pdf_bytes, media_type="application/pdf", headers=headers)
